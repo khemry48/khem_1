@@ -1,5 +1,39 @@
 <script setup>
-import { RouterLink } from 'vue-router';
+import { ref, onMounted } from 'vue';
+import { RouterLink, useRouter } from 'vue-router';
+
+const router = useRouter()
+
+const isLoggedIn = ref(false)
+const searchText = ref('')
+
+onMounted (() => {
+    if (localStorage.getItem('isLoggedIn')) {
+        isLoggedIn.value = true
+    }
+})
+
+const login = () => {
+    isLoggedIn.value = true
+    localStorage.setItem('isLoggedIn', true)
+}
+
+const logout = () => {
+    isLoggedIn.value = false
+    localStorage.removeItem('isLoggedIn')
+}
+
+const handleSearch = (event) => {
+    if (event.key === 'Enter') {
+        router.push({
+            name: 'search',
+            query: {
+                q: searchText.value
+            }
+        })
+    }
+}
+
 </script>
 
 <template>
@@ -10,16 +44,23 @@ import { RouterLink } from 'vue-router';
                 >SeeReng Shop
                 </RouterLink>
             </div>
-            <div class="flex gap-2">
-                <input type="text" placeholder="Search" class="input input-bordered w-24 md:w-auto rounded-3xl" />
-                <div class="flex-none">
-                    <div class="dropdown dropdown-end">
-                        <div tabindex="0" role="button" class="btn btn-ghost btn-circle mr-2">
-                            <div class="indicator">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+            <div class="flex gap-2 ">
+                <div class="form-control">
+                    <input 
+                    type="text" 
+                    placeholder="Search" 
+                    class="input input-bordered w-24 md:w-auto rounded-3xl" 
+                    v-model="searchText"
+                    @keyup="handleSearch"/>
+                </div>
+                    <div class="flex-none">
+                        <div class="dropdown dropdown-end">
+                            <div tabindex="0" role="button" class="btn btn-ghost btn-circle mr-2">
+                                <div class="indicator">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                                     stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                                 </svg>
                                 <span class="badge badge-sm indicator-item">8</span>
                             </div>
@@ -36,12 +77,15 @@ import { RouterLink } from 'vue-router';
                             </div>
                         </div>
                     </div>
-                    <div class="dropdown dropdown-end">
+                    <button @click="login" v-if="!isLoggedIn" class="btn btn-ghost rounded-3xl">
+                        Login
+                    </button>
+                    <div v-else class="dropdown dropdown-end">
                         <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
 
                             <div class="w-10 rounded-full">
                                 <img alt="Tailwind CSS Navbar component"
-                                    src="https://img.pikbest.com/png-images/20240607/cute-pilot-sitting-cartoon-illustration-png_10602437.png!w700wp" />
+                                    src="https://img.pikbest.com/png-images/20240607/cute-pilot-sitting-cartoon-illustration-png_10602437.png!w700wp"/>
                             </div>
                         </div>
                         <ul tabindex="0"
@@ -49,7 +93,9 @@ import { RouterLink } from 'vue-router';
                             <li>
                                 <RouterLink :to="{name: 'profile'}">Profile</RouterLink>
                             </li>
-                            <li><RouterLink :to="{name: 'checkout'}">Logout</RouterLink></li>
+                            <li>
+                               <a @click="logout"> Logout </a>
+                            </li>
                         </ul>
                     </div>
                 </div>
