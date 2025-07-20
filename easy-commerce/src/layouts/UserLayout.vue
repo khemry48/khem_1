@@ -25,6 +25,9 @@ const login = () => {
 const logout = () => {
     isLoggedIn.value = false
     localStorage.removeItem('isLoggedIn')
+    localStorage.removeItem('cart-data')
+    localStorage.removeItem('order-data')
+    window.location.reload()
 }
 
 const handleSearch = (event) => {
@@ -88,8 +91,8 @@ const handleSearch = (event) => {
                         <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
 
                             <div class="w-10 rounded-full">
-                                <img alt="Tailwind CSS Navbar component"
-                                    src="https://img.pikbest.com/png-images/20240607/cute-pilot-sitting-cartoon-illustration-png_10602437.png!w700wp"/>
+                                <img
+                                    src="@/components/images/winter1.jpg"/>
                             </div>
                         </div>
                         <ul tabindex="0"

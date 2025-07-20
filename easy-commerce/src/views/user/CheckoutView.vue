@@ -90,7 +90,7 @@ const payment = () => {
             <div>ราคาสินค้าทั้งหมด</div>
             <div>{{ cartStore.summaryPrice }}</div>
           </div>
-          <div class="flex justify-between p-4">
+          <div class="flex justify-between">
             <div>ค่าส่ง</div>
             <div>0</div>
           </div>
